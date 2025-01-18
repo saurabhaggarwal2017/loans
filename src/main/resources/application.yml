@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: Loan-service
+
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://127.0.0.1:3306/easy-microservice-loan
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+server:
+  port: 8090
