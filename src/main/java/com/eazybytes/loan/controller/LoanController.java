@@ -11,6 +11,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +28,17 @@ import java.util.List;
 )
 @RestController
 @RequestMapping(path = "/api/v1/loans", produces = MediaType.APPLICATION_JSON_VALUE)
-@AllArgsConstructor
 @Validated
+@RefreshScope
 public class LoanController {
     private final ILoanService loanService;
+    @Value("${build.version}")
+    private String version;
+    @Autowired
+    private LoansContactInfoDto loansContactInfoDto;
+    public LoanController(ILoanService loanService) {
+        this.loanService = loanService;
+    }
 
     @Operation(
             method = "POST",
@@ -166,6 +176,15 @@ public class LoanController {
     ) {
         loanService.deleteLoan(mobileNumber, loanId);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(HttpStatus.OK.toString(), "Loan deleted successfully."));
+    }
+    @GetMapping("/build-info")
+    public ResponseEntity<String> getBuildInfo() {
+        return ResponseEntity.status(HttpStatus.OK).body(version);
+    }
+
+    @GetMapping("/contact-info")
+    public ResponseEntity<LoansContactInfoDto> getContactInfo() {
+        return ResponseEntity.status(HttpStatus.OK).body(loansContactInfoDto);
     }
 
 }

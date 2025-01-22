@@ -1,6 +1,9 @@
+server:
+  port: 8090
+
 spring:
   application:
-    name: Loan-service
+    name: loans
 
   datasource:
     username: root
@@ -11,5 +14,21 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-server:
-  port: 8090
+
+  profiles:
+    active: "default"
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
