@@ -39,6 +39,7 @@ public class LoanController {
     private final Logger logger = LoggerFactory.getLogger(LoanController.class);
     @Autowired
     private LoansContactInfoDto loansContactInfoDto;
+
     public LoanController(ILoanService loanService) {
         this.loanService = loanService;
     }
@@ -182,6 +183,7 @@ public class LoanController {
         loanService.deleteLoan(mobileNumber, loanId);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(HttpStatus.OK.toString(), "Loan deleted successfully."));
     }
+
     @GetMapping("/build-info")
     public ResponseEntity<String> getBuildInfo() {
         return ResponseEntity.status(HttpStatus.OK).body(version);
